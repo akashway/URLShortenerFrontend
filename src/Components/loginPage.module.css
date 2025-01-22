@@ -1,0 +1,8 @@
+.loginContainer{
+    display: flex;
+}
+
+.error{
+    color:red;
+    margin-top: 0.25rem;
+}
