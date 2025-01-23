@@ -8,10 +8,15 @@ import Links from './Links'
 import Analytics from './Analytics'
 import Settings from './Settings'
 import NewLinkModal from './NewLinkModal'
-
+import getAllLinksOfLoggedUser from '../services/getAllLinksOfLoggedUser'
+import getAllAnalyticsOfLoggedUser from '../services/getAllAnalyticsOfLoggedUser'
 
 
 const DashboardPage = () => {
+    const [allLinks, setAllLinks] = useState([])
+    const [linksLoading,setLinksLoading]=useState(true)
+    const [allAnalytics, setAllAnalytics] = useState([])
+    const [analyticsLoading,setAnalyticsLoading]=useState(true)
     const [currentUser, setCurrentUser] = useState({})
     const [activeTab, setActiveTab] = useState('DasboardClickInfo')
     const [newLinkModalVisibility, setNewLinkModalVisibility] = useState(false)
@@ -24,10 +29,10 @@ const DashboardPage = () => {
                 return <DasboardClickInfo />
 
             case 'Links':
-                return <Links />
+                return <Links allLinks={allLinks} setLinksLoading={setLinksLoading} setAnalyticsLoading={setAnalyticsLoading} />
 
             case 'Analytics':
-                return <Analytics />
+                return <Analytics allAnalytics={allAnalytics}/>
 
             case 'Settings':
                 return <Settings />
@@ -42,26 +47,30 @@ const DashboardPage = () => {
         navigate("/login")
     }
 
-    const getCurrentProfile = async () => {
-        const response = await profileService()
-        const responseJson = await response.json()
-        setCurrentUser(responseJson)
-    }
-
 
     const getCurrentTimeAndDate = () => {
         const date = new Date()
         console.log(date)
     }
 
-    const createNewLinkHandler=()=>{
-       return <NewLinkModal/>
+    // const createNewLinkHandler=()=>{
+    //    return <NewLinkModal/>
+    // }
+
+
+    const getAllLinks = async () => {
+        const response = await getAllLinksOfLoggedUser()
+        const responseJson = await response.json()
+        setAllLinks(responseJson)
     }
 
 
-    useEffect(() => {
-        getCurrentProfile()
-    }, [])
+    const getAllAnalytics=async ()=>{
+        const response = await getAllAnalyticsOfLoggedUser()
+        const responseJson = await response.json()
+        setAllAnalytics(responseJson)
+    }
+
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -74,6 +83,29 @@ const DashboardPage = () => {
         }
     }, [])
 
+    useEffect(() => {
+        const getCurrentProfile = async () => {
+            const response = await profileService()
+            const responseJson = await response.json()
+            setCurrentUser(responseJson)
+        }
+        getCurrentProfile()
+    }, [])
+
+    useEffect(() => {
+        if(linksLoading){
+            getAllLinks()
+            setLinksLoading(false)
+        }
+    }, [linksLoading])
+
+    useEffect(() => {
+        if(analyticsLoading){
+            getAllAnalytics()
+            setAnalyticsLoading(false)
+        }
+    }, [analyticsLoading])
+
 
     return (
         <div className={styles.dashboardContainer}>
@@ -84,7 +116,7 @@ const DashboardPage = () => {
             <div className={styles.dashboardRightSection}>
                 <div className={styles.dashboardHeader}>
                     Good Morning {currentUser.name}
-                    <button onClick={()=>setNewLinkModalVisibility(!newLinkModalVisibility)}>Create new</button>
+                    <button onClick={() => setNewLinkModalVisibility(!newLinkModalVisibility)}>Create new</button>
                     <button onClick={logout}>Logout</button>
                 </div>
                 <div className={styles.dashboardMain}>
@@ -92,7 +124,7 @@ const DashboardPage = () => {
                 </div>
             </div>
 
-            {newLinkModalVisibility && <NewLinkModal/>}
+            {newLinkModalVisibility && <NewLinkModal visibility={setNewLinkModalVisibility} setLoading={setLinksLoading}/>}
         </div>
     )
 }

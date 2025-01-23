@@ -1,9 +1,44 @@
 import React from 'react'
+const URL = import.meta.env.VITE_BACKEND_URL
 
-const Analytics = () => {
+
+const Analytics = (props) => {
   return (
     <div>
-      Analytics
+       <div>
+      {
+        props.allAnalytics.length > 0 && (
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Original Link</th>
+                  <th>Short Link</th>
+                  <th>ip address</th>
+                  <th>User Device</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  props.allAnalytics.map(analytic => {
+                    return (
+                      <tr key={analytic.shortLink}>
+                        <td>{analytic.timestamp}</td>
+                        <td>{analytic.originalLink}</td>
+                        <td>{`${URL}/link/${analytic.shortLink}`}</td>
+                        <td>{analytic.ipAddress}</td>
+                        <td>{analytic.device}</td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+    </div>
     </div>
   )
 }

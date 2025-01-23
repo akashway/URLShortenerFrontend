@@ -1,0 +1,2 @@
+1) In link and analytics tables links is clickable or not
+2)Can a user who not loggedin access shortener link or not 
