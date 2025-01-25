@@ -17,6 +17,7 @@
 .dashboardHeader{
     border-bottom: 1px solid #F6F6F9;
     height: 10%;
+    display: flex;
 }
 
 

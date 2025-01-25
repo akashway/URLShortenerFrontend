@@ -14,9 +14,9 @@ import getAllAnalyticsOfLoggedUser from '../services/getAllAnalyticsOfLoggedUser
 
 const DashboardPage = () => {
     const [allLinks, setAllLinks] = useState([])
-    const [linksLoading,setLinksLoading]=useState(true)
+    const [linksLoading, setLinksLoading] = useState(true)
     const [allAnalytics, setAllAnalytics] = useState([])
-    const [analyticsLoading,setAnalyticsLoading]=useState(true)
+    const [analyticsLoading, setAnalyticsLoading] = useState(true)
     const [currentUser, setCurrentUser] = useState({})
     const [activeTab, setActiveTab] = useState('DasboardClickInfo')
     const [newLinkModalVisibility, setNewLinkModalVisibility] = useState(false)
@@ -32,7 +32,7 @@ const DashboardPage = () => {
                 return <Links allLinks={allLinks} setLinksLoading={setLinksLoading} setAnalyticsLoading={setAnalyticsLoading} />
 
             case 'Analytics':
-                return <Analytics allAnalytics={allAnalytics}/>
+                return <Analytics allAnalytics={allAnalytics} />
 
             case 'Settings':
                 return <Settings />
@@ -48,9 +48,31 @@ const DashboardPage = () => {
     }
 
 
+    const getGreetings = () => {
+        const currentHour = new Date().getHours()
+
+        if (currentHour >= 0 && currentHour < 12) {
+            return "Good morning!"
+        } else if (currentHour >= 12 && currentHour < 17) {
+            return "Good afternoon!"
+        } else if (currentHour >= 17 && currentHour < 20) {
+            return "Good evening!"
+        } else {
+            return "Good night!"
+        }
+    }
+
+
     const getCurrentTimeAndDate = () => {
         const date = new Date()
-        console.log(date)
+        const options = {
+            weekday: 'short',
+            month: 'short',
+            year: '2-digit',
+
+        }
+        const formatter = new Intl.DateTimeFormat('en-US', options)
+        return formatter.format(date)
     }
 
     // const createNewLinkHandler=()=>{
@@ -65,7 +87,7 @@ const DashboardPage = () => {
     }
 
 
-    const getAllAnalytics=async ()=>{
+    const getAllAnalytics = async () => {
         const response = await getAllAnalyticsOfLoggedUser()
         const responseJson = await response.json()
         setAllAnalytics(responseJson)
@@ -87,24 +109,25 @@ const DashboardPage = () => {
         const getCurrentProfile = async () => {
             const response = await profileService()
             const responseJson = await response.json()
+            console.log(":kkk")
             setCurrentUser(responseJson)
         }
         getCurrentProfile()
     }, [])
 
     useEffect(() => {
-        if(linksLoading){
+        if (linksLoading) {
             getAllLinks()
             setLinksLoading(false)
         }
-    }, [linksLoading,setLinksLoading])
+    }, [linksLoading, setLinksLoading])
 
     useEffect(() => {
-        if(analyticsLoading){
+        if (analyticsLoading) {
             getAllAnalytics()
             setAnalyticsLoading(false)
         }
-    }, [analyticsLoading,setAnalyticsLoading])
+    }, [analyticsLoading, setAnalyticsLoading])
 
 
     return (
@@ -115,16 +138,21 @@ const DashboardPage = () => {
 
             <div className={styles.dashboardRightSection}>
                 <div className={styles.dashboardHeader}>
-                    Good Morning {currentUser.name}
-                    <button onClick={() => setNewLinkModalVisibility(!newLinkModalVisibility)}>Create new</button>
-                    <button onClick={logout}>Logout</button>
+                    <div>
+                        <h1>{getGreetings()}{currentUser.name}</h1>
+                        <p>{getCurrentTimeAndDate()}</p>
+                    </div>
+                    <div>
+                        <button onClick={() => setNewLinkModalVisibility(!newLinkModalVisibility)}>Create new</button>
+                        <button onClick={logout}>Logout</button>
+                    </div>
                 </div>
                 <div className={styles.dashboardMain}>
                     {getActiveTab()}
                 </div>
             </div>
 
-            {newLinkModalVisibility && <NewLinkModal modalName="New Link" visibility={setNewLinkModalVisibility} setLoading={setLinksLoading}/>}
+            {newLinkModalVisibility && <NewLinkModal modalName="New Link" visibility={setNewLinkModalVisibility} setLoading={setLinksLoading} />}
         </div>
     )
 }
