@@ -1,4 +1,5 @@
 import React from 'react'
+import convertDate from '../commonFunction/convertDate'
 const URL = import.meta.env.VITE_BACKEND_URL
 
 
@@ -8,7 +9,7 @@ const Analytics = (props) => {
        <div>
       {
         props.allAnalytics.length > 0 && (
-          <div>
+          <div style={{overflow:"auto",height:"300px"}}>
             <table>
               <thead>
                 <tr>
@@ -23,8 +24,8 @@ const Analytics = (props) => {
                 {
                   props.allAnalytics.map(analytic => {
                     return (
-                      <tr key={analytic.shortLink}>
-                        <td>{analytic.timestamp}</td>
+                      <tr key={analytic._id}>
+                        <td>{convertDate(analytic.timestamp)}</td>
                         <td>{analytic.originalLink}</td>
                         <td>{`${URL}/link/${analytic.shortLink}`}</td>
                         <td>{analytic.ipAddress}</td>

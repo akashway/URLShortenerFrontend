@@ -1,39 +1,67 @@
 import React, { useState } from 'react'
 import styles from './dashboardPage.module.css'
 import addLinkService from '../services/addLinkService'
-
+import convertDate from '../commonFunction/convertDate'
+import updateLinkByIdService from '../services/updateLinkByIdService'
 
 const NewLinkModal = (props) => {
 
   const [formData, setFormData] = useState({
-    originalLink: "",
-    remarks: "",
-    expiryDate: ""
+    originalLink: props.modalName === "New Link" ? "" : props.linkData.originalLink,
+    remarks: props.modalName === "New Link" ? "" : props.linkData.remarks,
+    expiryDate:props.modalName === "New Link" ? "" : props.linkData.expiryDate
   })
 
   const changeHandler = (e) => {
-    setFormData(prevData => ({
-      ...prevData,
-      [e.target.name]: e.target.value
-    }))
+    setFormData(prevData => {
+      return ({
+        ...prevData,
+        [e.target.name]: e.target.value
+      })
+    })
   }
 
-  const closeModal=()=>{
+  const closeModal = () => {
     props.visibility(false)
   }
 
   const submitHandler = async (e) => {
     e.preventDefault()
     console.log(formData)
-    const response =await addLinkService(formData)
-    const responseJson=await response.json()
-    alert(responseJson.message)
+    if (props.modalName === "New Link") {
+      const response = await addLinkService(formData)
+      const responseJson = await response.json()
+      alert(responseJson.message)
+    }
+    else {
+      if (formData.originalLink === "") {
+        setFormData((prevData) => ({
+          ...prevData,
+          originalLink: props.linkData.originalLink
+        }))
+      }
+      if (formData.remarks === "") {
+        setFormData((prevData) => ({
+          ...prevData,
+          remarks: props.linkData.remarks
+        }))
+      }
+      if (formData.expiryDate === "") {
+        setFormData((prevData) => ({
+          ...prevData,
+          expiryDate: props.linkData.expiryDate
+        }))
+      }
+      const response = await updateLinkByIdService(props.linkData.id, formData)
+      const responseJson = await response.json()
+      alert(responseJson.message)
+    }
     props.setLoading(true)
   }
 
   return (
     <div className={styles.linkModal}>
-
+      <h1>{props.modalName}</h1>
       <button type='button' onClick={closeModal}>Close</button>
       <form onSubmit={submitHandler}>
         <div>
@@ -69,7 +97,7 @@ const NewLinkModal = (props) => {
           />
         </div>
 
-        <button type='submit'>Create</button>
+        <button type='submit'>{props.modalName === "New Link" ? "Create" : "Save"}</button>
       </form>
     </div>
   )

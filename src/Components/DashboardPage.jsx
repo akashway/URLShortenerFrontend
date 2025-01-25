@@ -97,14 +97,14 @@ const DashboardPage = () => {
             getAllLinks()
             setLinksLoading(false)
         }
-    }, [linksLoading])
+    }, [linksLoading,setLinksLoading])
 
     useEffect(() => {
         if(analyticsLoading){
             getAllAnalytics()
             setAnalyticsLoading(false)
         }
-    }, [analyticsLoading])
+    }, [analyticsLoading,setAnalyticsLoading])
 
 
     return (
@@ -124,7 +124,7 @@ const DashboardPage = () => {
                 </div>
             </div>
 
-            {newLinkModalVisibility && <NewLinkModal visibility={setNewLinkModalVisibility} setLoading={setLinksLoading}/>}
+            {newLinkModalVisibility && <NewLinkModal modalName="New Link" visibility={setNewLinkModalVisibility} setLoading={setLinksLoading}/>}
         </div>
     )
 }

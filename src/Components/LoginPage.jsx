@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import loginService from '../services/loginService'
 import mainImage from '../assets/images/m_image.png'
 import styles from './loginPage.module.css'
@@ -29,11 +29,18 @@ const LoginPage = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault()
+        let responseJson
         const response = await loginService(userData)
-        const responseJson = await response.json()
-        localStorage.setItem('token', responseJson.token)
-        alert("Looged in Succesfully")
-        navigate("/")
+        if (response.status === 200) {
+            responseJson = await response.json()
+            localStorage.setItem('token', responseJson.token)
+            alert("Looged in Succesfully")
+            navigate("/")
+        }
+        else{
+            responseJson = await response.json()
+            alert(responseJson.message)
+        }
     }
 
 

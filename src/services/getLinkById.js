@@ -1,15 +1,15 @@
 const URL = import.meta.env.VITE_BACKEND_URL
 
-const getAllAnalyticsOfLoggedUser = async () => {
-    const response = await fetch(`${URL}/analytics`, {
-        method: 'GET',
+const getLinkById = async (id) => {
+    const response = await fetch(`${URL}/link/${id}`, {
+        method: "GET",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`
         }
     })
-    console.log(response)
     return response
+
 }
 
-export default getAllAnalyticsOfLoggedUser
+export default getLinkById
