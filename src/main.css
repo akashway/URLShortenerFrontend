@@ -12,12 +12,17 @@ html,body,#root{
 
 table {
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 th, td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
+    width: 50px;
+    white-space: nowrap;  
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 
 th {

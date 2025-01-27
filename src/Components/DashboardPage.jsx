@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import profileService from '../services/profileService'
 import LeftNav from './LefNav'
@@ -10,6 +10,7 @@ import Settings from './Settings'
 import NewLinkModal from './NewLinkModal'
 import getAllLinksOfLoggedUser from '../services/getAllLinksOfLoggedUser'
 import getAllAnalyticsOfLoggedUser from '../services/getAllAnalyticsOfLoggedUser'
+import { MyContext } from '../context/ContextProvider'
 
 
 const DashboardPage = () => {
@@ -21,6 +22,7 @@ const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('DasboardClickInfo')
     const [newLinkModalVisibility, setNewLinkModalVisibility] = useState(false)
 
+    const {offset}=useContext(MyContext)
     const navigate = useNavigate()
 
     const getActiveTab = () => {
@@ -29,7 +31,11 @@ const DashboardPage = () => {
                 return <DasboardClickInfo />
 
             case 'Links':
-                return <Links allLinks={allLinks} setLinksLoading={setLinksLoading} setAnalyticsLoading={setAnalyticsLoading} />
+                return <Links
+                    allLinks={allLinks}
+                    setLinksLoading={setLinksLoading}
+                    setAnalyticsLoading={setAnalyticsLoading}
+                />
 
             case 'Analytics':
                 return <Analytics allAnalytics={allAnalytics} />
@@ -81,7 +87,7 @@ const DashboardPage = () => {
 
 
     const getAllLinks = async () => {
-        const response = await getAllLinksOfLoggedUser()
+        const response = await getAllLinksOfLoggedUser(offset)
         const responseJson = await response.json()
         setAllLinks(responseJson)
     }
@@ -120,7 +126,7 @@ const DashboardPage = () => {
             getAllLinks()
             setLinksLoading(false)
         }
-    }, [linksLoading, setLinksLoading])
+    }, [linksLoading, setLinksLoading,offset])
 
     useEffect(() => {
         if (analyticsLoading) {

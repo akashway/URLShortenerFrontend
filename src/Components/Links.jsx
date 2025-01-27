@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import convertDate from '../commonFunction/convertDate'
 import editIcon from '../assets/images/icons/edit-icons.png'
 import deleteIcon from '../assets/images/icons/delete-icons.png'
@@ -6,7 +6,9 @@ import copyIcon from '../assets/images/icons/copy-icon.png'
 import NewLinkModal from './NewLinkModal'
 import getLinkById from '../services/getLinkById'
 import deleteLinkById from '../services/deleteLinkById'
-import { ToastContainer,toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import { MyContext } from '../context/ContextProvider'
+
 
 const URL = import.meta.env.VITE_BACKEND_URL
 
@@ -18,6 +20,9 @@ const Links = (props) => {
     remarks: "",
     expiryDate: ""
   })
+
+  const { setOffset } = useContext(MyContext)
+
 
   function formatToDate(inputDateTime) {
     const date = new Date(inputDateTime)
@@ -31,7 +36,7 @@ const Links = (props) => {
     const response = await getLinkById(id)
     const responseJson = await response.json()
     setLinkData({
-      id:responseJson._id,
+      id: responseJson._id,
       originalLink: responseJson.originalLink,
       remarks: responseJson.remarks,
       expiryDate: formatToDate(responseJson.expiryDate)
@@ -47,13 +52,13 @@ const Links = (props) => {
     props.setAnalyticsLoading(true)
   }
 
-  const copyClickHandler=(link)=>{
-    navigator.clipboard.writeText(link).then(()=>{
+  const copyClickHandler = (link) => {
+    navigator.clipboard.writeText(link).then(() => {
       toast.success('Link Copied')
     })
-    .catch((err)=>{
-      console.error("Failed to copy text: ", err)
-    })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err)
+      })
   }
 
   // const shortLinkClickHandler = async (shortLink) => {
@@ -75,7 +80,7 @@ const Links = (props) => {
     <div>
       {
         props.allLinks.length > 0 && (
-          <div style={{ overflow: "auto", height: "300px" }}>
+          <div style={{ overflow: "auto", maxWidth: "1200px", height: "500px" }}>
             <table>
               <thead>
                 <tr>
@@ -97,8 +102,8 @@ const Links = (props) => {
                         <td>{link.originalLink}</td>
                         {/* <td onClick={() => shortLinkClickHandler(link.shortLink)}>{`${URL}/link/click/${link.shortLink}`}</td> */}
                         <td>
-                        {`${URL}/${link.shortLink}`}
-                        <img src={copyIcon} alt="edit-icon" onClick={() => copyClickHandler(`${URL}/${link.shortLink}`)} />
+                          {`${URL}/${link.shortLink}`}
+                          <img src={copyIcon} alt="edit-icon" onClick={() => copyClickHandler(`${URL}/${link.shortLink}`)} />
                         </td>
                         <td>{link.remarks}</td>
                         <td>{link.clickCount}</td>
@@ -117,7 +122,16 @@ const Links = (props) => {
         )
       }
 
-      <ToastContainer/>
+      <ToastContainer />
+
+      <button onClick={() => setOffset(currPage => {
+        props.setLinksLoading(true)
+        return Math.max(currPage - 1, 1)
+      })}>Prev</button>
+      <button onClick={() => setOffset(currPage => {
+        props.setLinksLoading(true)
+        return currPage + 1
+      })}>Next</button>
 
       {editLinkModalVisibility && <NewLinkModal modalName="Edit Link" visibility={setEditLinkModalVisibility} setLoading={props.setLinksLoading} linkData={linkData} />}
     </div>
