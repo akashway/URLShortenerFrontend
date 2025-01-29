@@ -10,6 +10,7 @@ import Settings from './Settings'
 import NewLinkModal from './NewLinkModal'
 import getAllLinksOfLoggedUser from '../services/getAllLinksOfLoggedUser'
 import getAllAnalyticsOfLoggedUser from '../services/getAllAnalyticsOfLoggedUser'
+import { getClickByDays, getClickByDevice, getTotalClicks } from '../services/getClickCounts'
 import { MyContext } from '../context/ContextProvider'
 
 
@@ -22,13 +23,21 @@ const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('DasboardClickInfo')
     const [newLinkModalVisibility, setNewLinkModalVisibility] = useState(false)
 
+    const [totalClicks,setTotalClick]=useState({})
+    const [dayWiseClicks,setDayWiseClick]=useState([])
+    const [deviceWiseClicks,setDeviceWiseClick]=useState([])
+
     const {offset}=useContext(MyContext)
     const navigate = useNavigate()
 
     const getActiveTab = () => {
         switch (activeTab) {
             case 'DasboardClickInfo':
-                return <DasboardClickInfo />
+                return <DasboardClickInfo
+                    totalClicks={totalClicks}
+                    dayWiseClicks={dayWiseClicks}
+                    deviceWiseClicks={deviceWiseClicks}
+                 />
 
             case 'Links':
                 return <Links
@@ -111,15 +120,44 @@ const DashboardPage = () => {
         }
     }, [])
 
+
     useEffect(() => {
         const getCurrentProfile = async () => {
             const response = await profileService()
             const responseJson = await response.json()
-            console.log(":kkk")
             setCurrentUser(responseJson)
         }
         getCurrentProfile()
     }, [])
+
+
+    useEffect(()=>{
+       const fetchTotalClick=async ()=>{
+        const response = await getTotalClicks()
+        const responseJson = await response.json()
+        setTotalClick(responseJson)
+       }
+       fetchTotalClick()
+    },[])
+
+    useEffect(()=>{
+        const fetchDayWiseClick=async ()=>{
+         const response = await getClickByDays()
+         const responseJson = await response.json()
+         setDayWiseClick(responseJson)
+        }
+        fetchDayWiseClick()
+     },[])
+
+     useEffect(()=>{
+        const fetchDeviceWiseClick=async ()=>{
+         const response = await getClickByDevice()
+         const responseJson = await response.json()
+         setDeviceWiseClick(responseJson)
+        }
+
+        fetchDeviceWiseClick()
+     },[])
 
     useEffect(() => {
         if (linksLoading) {
