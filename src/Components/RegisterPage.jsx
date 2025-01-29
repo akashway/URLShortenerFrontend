@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import registerService from '../services/registerService'
 import styles from './registerPage.module.css'
 import mainImage from '../assets/images/m_image.png'
+import Button from './Button'
 
 const RegisterPage = () => {
     const navigate = useNavigate()
@@ -86,14 +87,31 @@ const RegisterPage = () => {
         }
     })
 
+    
+    const signupClick=()=>{
+        navigate("/register")
+    }
+
+    const loginClick=()=>{
+        navigate("/login")
+    }
+
 
     return (
         <div className={styles.registerContainer}>
-            <div>
+            <div className={styles.registerImage}>
                 <img src={mainImage} alt="" />
             </div>
-            <div>
-                <form onSubmit={submitHandler}>
+
+            <div className={styles.registerRightSection}>
+                <div className={styles.registerButtonNaviagtion}>
+                    <Button clickNavigation={signupClick}>SignUp</Button>
+                    <Button clickNavigation={loginClick}>Login</Button>
+                </div>
+
+                <form className={styles.registerForm} onSubmit={submitHandler}>
+
+                    <p>Join us Today!</p>
                     <input
                         type='text'
                         placeholder='Name'
@@ -102,7 +120,7 @@ const RegisterPage = () => {
                         value={userData.name}
                         onChange={changeHandler}
                     />
-                    {errors.name && <p className={styles.error}>{errors.name}</p>}
+                   <div className={styles.error}>{errors.name && <p>{errors.name}</p>}</div>
 
                     <input
                         type='email'
@@ -112,7 +130,7 @@ const RegisterPage = () => {
                         value={userData.email}
                         onChange={changeHandler}
                     />
-                    {errors.email && <p className={styles.error}>{errors.email}</p>}
+                    <div className={styles.error}>{errors.email && <p>{errors.email}</p>}</div>
 
                     <input
                         type='text'
@@ -122,7 +140,7 @@ const RegisterPage = () => {
                         value={userData.mobile}
                         onChange={changeHandler}
                     />
-                    {errors.mobile && <p className={styles.error}>{errors.mobile}</p>}
+                    <div className={styles.error}>{errors.mobile && <p>{errors.mobile}</p>}</div>
                     <input
                         type='password'
                         placeholder='Password'
@@ -131,7 +149,7 @@ const RegisterPage = () => {
                         value={userData.password}
                         onChange={changeHandler}
                     />
-                    {errors.password && <p className={styles.error}>{errors.password}</p>}
+                    <div className={styles.error}>{errors.password && <p>{errors.password}</p>}</div>
                     <input
                         type='password'
                         placeholder='Confirm Password'
@@ -140,12 +158,12 @@ const RegisterPage = () => {
                         value={userData.confirmPass}
                         onChange={changeHandler}
                     />
-                    {errors.confirmPass && <p className={styles.error}>{errors.confirmPass}</p>}
+                    <div className={styles.error}>{errors.confirmPass && <p>{errors.confirmPass}</p>}</div>
 
                     <button type='submit'>Register</button>
 
                 </form>
-                <div>
+                <div className={styles.linkNavigation}>
                     Already have an account ? <Link to="/login">Login</Link>
                 </div>
             </div>

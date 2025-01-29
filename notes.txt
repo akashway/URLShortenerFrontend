@@ -2,3 +2,7 @@
 2)Can a user who not loggedin access shortener link or not 
 
 like user copy link and pasted now i want to kepp track how mant times click happens . yes i am writting logic to increase count as soon as user paste on browser and submit byt how i can dynamically update my react UI. click happing outside application
+
+fontSize=rem
+padding and margin=em
+width:em or %

@@ -1,0 +1,23 @@
+.loginButton{
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid #1B48DA;
+    border-radius: 5px;
+    padding: 0.5em;
+    color: #FFFFFF;
+    background: #1B48DA;
+    margin: 1em;
+    cursor: pointer;
+}
+
+.signupButton{
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5em;
+    color: #3B3C51;
+    margin: 1em;
+    background-color:#FFFFFF ;
+    cursor: pointer;
+}

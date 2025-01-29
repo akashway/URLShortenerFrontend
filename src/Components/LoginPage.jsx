@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import loginService from '../services/loginService'
 import mainImage from '../assets/images/m_image.png'
 import styles from './loginPage.module.css'
+import Button from './Button'
 
 const LoginPage = () => {
 
@@ -37,7 +38,7 @@ const LoginPage = () => {
             alert("Looged in Succesfully")
             navigate("/")
         }
-        else{
+        else {
             responseJson = await response.json()
             alert(responseJson.message)
         }
@@ -51,6 +52,15 @@ const LoginPage = () => {
         }
     })
 
+    const signupClick=()=>{
+        navigate("/register")
+    }
+
+    const loginClick=()=>{
+        navigate("/login")
+    }
+
+
     return (
         <div className={styles.loginContainer}>
             <div>
@@ -58,6 +68,10 @@ const LoginPage = () => {
 
             </div>
             <div>
+                <div>
+                <Button clickNavigation={signupClick}>SignUp</Button>
+                <Button clickNavigation={loginClick}>Login</Button>
+                </div>
                 <form onSubmit={submitHandler}>
                     <input
                         type='email'

@@ -1,8 +1,105 @@
-.registerContainer{
+.registerContainer {
     display: flex;
+    width: 100%;
+    height: 100%;
 }
 
-.error{
-    color:red;
-    margin-top: 0.25rem;
+.registerImage {
+    flex-basis: 45%;
 }
+
+.registerImage>img {
+    width: 100%;
+    height: 100%;
+}
+
+.registerRightSection {
+    flex-basis: 55%;
+    display: flex;
+    flex-direction: column;
+}
+
+.error {
+    color: red;
+    margin-top: 0.25rem;
+    width: 50%;
+    height: 5%;
+}
+
+.registerButtonNaviagtion {
+    border: 2px solid blue;
+    flex-basis: 10%;
+    text-align: right;
+    width: 100%;
+}
+
+.registerForm {
+    border: 2px solid pink;
+    flex-basis: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.registerForm input {
+    border: 1px solid #3B3C51;
+    border-radius: 2px;
+    width: 50%;
+    height: 7%;
+}
+
+.registerForm input::placeholder {
+    color: #B3B3B3;
+    padding: 1em;
+    font-weight: 600;
+}
+
+.registerForm button {
+    font-size: 1rem;
+    padding: 0.5em;
+    width: 50%;
+    color: #FFFFFF;
+    background: #1B48DA;
+    border: 1px solid #1B48DA;
+    border-radius: 5px;
+}
+
+.registerForm>p {
+    color: #3B3C51;
+    width: 50%;
+    height: 5%;
+    font-weight: 400;
+    margin-bottom: 2em;
+}
+
+.linkNavigation {
+    border: 2px solid rgb(120, 120, 158);
+    flex-basis: 10%;
+    width: 50%;
+    align-self: center;
+    text-align: center;
+}
+
+.linkNavigation a{
+    text-decoration: none;
+}
+
+/* @media (max-width: 1200px) {
+    .registerForm>p{
+        font-weight: 600;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .registerForm>p{
+        font-weight: 700;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .registerForm>p{
+        font-weight: 800;
+    }
+} */
