@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import profileService from '../services/profileService'
 import LeftNav from './LefNav'
@@ -23,21 +23,27 @@ const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('DasboardClickInfo')
     const [newLinkModalVisibility, setNewLinkModalVisibility] = useState(false)
 
-    const [totalClicks,setTotalClick]=useState({})
-    const [dayWiseClicks,setDayWiseClick]=useState([])
-    const [deviceWiseClicks,setDeviceWiseClick]=useState([])
+    const [totalClicks, setTotalClick] = useState({})
+    const [dayWiseClicks, setDayWiseClick] = useState([])
+    const [deviceWiseClicks, setDeviceWiseClick] = useState([])
 
-    const {offset}=useContext(MyContext)
+    const { offset, } = useContext(MyContext)
+    const { offsetAnalytics, } = useContext(MyContext)
     const navigate = useNavigate()
 
     const getActiveTab = () => {
         switch (activeTab) {
             case 'DasboardClickInfo':
-                return <DasboardClickInfo
-                    totalClicks={totalClicks}
-                    dayWiseClicks={dayWiseClicks}
-                    deviceWiseClicks={deviceWiseClicks}
-                 />
+                if (allLinks.length > 0) {
+                    return <DasboardClickInfo
+                        totalClicks={totalClicks}
+                        dayWiseClicks={dayWiseClicks}
+                        deviceWiseClicks={deviceWiseClicks}
+                    />
+                }
+                else {
+                    <DasboardClickInfo />
+                }
 
             case 'Links':
                 return <Links
@@ -47,10 +53,12 @@ const DashboardPage = () => {
                 />
 
             case 'Analytics':
-                return <Analytics allAnalytics={allAnalytics} />
+                return <Analytics allAnalytics={allAnalytics}  setAnalyticsLoading={setAnalyticsLoading}/>
 
             case 'Settings':
-                return <Settings />
+                return <Settings
+                    currentUser={currentUser}
+                />
 
             default:
                 return ""
@@ -90,10 +98,6 @@ const DashboardPage = () => {
         return formatter.format(date)
     }
 
-    // const createNewLinkHandler=()=>{
-    //    return <NewLinkModal/>
-    // }
-
 
     const getAllLinks = async () => {
         const response = await getAllLinksOfLoggedUser(offset)
@@ -103,7 +107,7 @@ const DashboardPage = () => {
 
 
     const getAllAnalytics = async () => {
-        const response = await getAllAnalyticsOfLoggedUser()
+        const response = await getAllAnalyticsOfLoggedUser(offsetAnalytics)
         const responseJson = await response.json()
         setAllAnalytics(responseJson)
     }
@@ -131,47 +135,47 @@ const DashboardPage = () => {
     }, [])
 
 
-    useEffect(()=>{
-       const fetchTotalClick=async ()=>{
-        const response = await getTotalClicks()
-        const responseJson = await response.json()
-        setTotalClick(responseJson)
-       }
-       fetchTotalClick()
-    },[])
+    useEffect(() => {
+        const fetchTotalClick = async () => {
+            const response = await getTotalClicks()
+            const responseJson = await response.json()
+            setTotalClick(responseJson)
+        }
+        fetchTotalClick()
+    }, [])
 
-    useEffect(()=>{
-        const fetchDayWiseClick=async ()=>{
-         const response = await getClickByDays()
-         const responseJson = await response.json()
-         setDayWiseClick(responseJson)
+    useEffect(() => {
+        const fetchDayWiseClick = async () => {
+            const response = await getClickByDays()
+            const responseJson = await response.json()
+            setDayWiseClick(responseJson)
         }
         fetchDayWiseClick()
-     },[])
+    }, [])
 
-     useEffect(()=>{
-        const fetchDeviceWiseClick=async ()=>{
-         const response = await getClickByDevice()
-         const responseJson = await response.json()
-         setDeviceWiseClick(responseJson)
+    useEffect(() => {
+        const fetchDeviceWiseClick = async () => {
+            const response = await getClickByDevice()
+            const responseJson = await response.json()
+            setDeviceWiseClick(responseJson)
         }
 
         fetchDeviceWiseClick()
-     },[])
+    }, [])
 
     useEffect(() => {
         if (linksLoading) {
             getAllLinks()
             setLinksLoading(false)
         }
-    }, [linksLoading, setLinksLoading,offset])
+    }, [linksLoading, setLinksLoading, offset])
 
     useEffect(() => {
         if (analyticsLoading) {
             getAllAnalytics()
             setAnalyticsLoading(false)
         }
-    }, [analyticsLoading, setAnalyticsLoading])
+    }, [analyticsLoading, setAnalyticsLoading,offsetAnalytics])
 
 
     return (

@@ -1,15 +1,18 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import convertDate from '../commonFunction/convertDate'
+import { MyContext } from '../context/ContextProvider'
 const URL = import.meta.env.VITE_BACKEND_URL
 
 
 const Analytics = (props) => {
+    const { setOffsetAnalytics } = useContext(MyContext)
+  
   return (
     <div>
        <div>
       {
         props.allAnalytics.length > 0 && (
-          <div style={{overflow:"auto",height:"300px"}}>
+          <div style={{ overflow: "auto", maxWidth: "1200px", height: "500px" }}>
             <table>
               <thead>
                 <tr>
@@ -40,6 +43,15 @@ const Analytics = (props) => {
         )
       }
     </div>
+
+    <button onClick={() => setOffsetAnalytics(currPage => {
+        props.setAnalyticsLoading(true)
+        return Math.max(currPage - 1, 1)
+      })}>Prev</button>
+      <button onClick={() => setOffsetAnalytics(currPage => {
+        props.setAnalyticsLoading(true)
+        return currPage + 1
+      })}>Next</button>
     </div>
   )
 }

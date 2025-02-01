@@ -4,8 +4,9 @@ const MyContext = createContext()
 
 const ContextProvider = (props) => {
    const [offset,setOffset]=useState(1)
+   const [offsetAnalytics,setOffsetAnalytics]=useState(1)
   return (
-    <MyContext.Provider value={{offset,setOffset}}>
+    <MyContext.Provider value={{offset,setOffset,offsetAnalytics,setOffsetAnalytics}}>
       {props.children}
     </MyContext.Provider>
   )

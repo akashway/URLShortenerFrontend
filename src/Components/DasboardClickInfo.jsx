@@ -13,19 +13,12 @@ const DasboardClickInfo = (props) => {
             percentage: ((entry.count / props.totalClicks[0].total) * 100)
         }))
 
-        console.log(chartDataDayWise)
-
         chartDataDeviceWise = props.deviceWiseClicks.map(entry => ({
             device: entry._id,
             clicks: entry.count,
             percentage: ((entry.count / props.totalClicks[0].total) * 100)
         }))
-        console.log(chartDataDeviceWise)
     }
-
-
-
-
 
 
     return (

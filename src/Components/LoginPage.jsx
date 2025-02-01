@@ -97,7 +97,7 @@ const LoginPage = () => {
                 </form>
 
                 <div>
-                    Don’t have an account?<Link to="/register">SignUp</Link>
+                    Don’t have an account?<Link style={{ textDecoration:"none"}} to="/register">SignUp</Link>
                 </div>
             </div>
         </div>

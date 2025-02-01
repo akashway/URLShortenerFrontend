@@ -27,14 +27,12 @@
 }
 
 .registerButtonNaviagtion {
-    border: 2px solid blue;
     flex-basis: 10%;
     text-align: right;
     width: 100%;
 }
 
 .registerForm {
-    border: 2px solid pink;
     flex-basis: 60%;
     display: flex;
     flex-direction: column;
@@ -73,7 +71,6 @@
 }
 
 .linkNavigation {
-    border: 2px solid rgb(120, 120, 158);
     flex-basis: 10%;
     width: 50%;
     align-self: center;
@@ -86,20 +83,20 @@
 
 /* @media (max-width: 1200px) {
     .registerForm>p{
-        font-weight: 600;
+        font-weight: 600
     }
 }
 
 
 @media (max-width: 768px) {
     .registerForm>p{
-        font-weight: 700;
+        font-weight: 700
     }
 }
 
 
 @media (max-width: 480px) {
     .registerForm>p{
-        font-weight: 800;
+        font-weight: 800
     }
 } */
